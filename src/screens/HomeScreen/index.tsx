@@ -13,7 +13,7 @@ const HomeScreen = () => {
 
   return (
     <ScrollView>
-      <View>
+      <View style={styles.container}>
         <View style={styles.carouselContainer}>
           <Carousel
             data={nowPlaying}
@@ -37,6 +37,9 @@ const HomeScreen = () => {
 export default HomeScreen;
 
 const styles = StyleSheet.create({
+  container: {
+    backgroundColor: 'white',
+  },
   carouselContainer: {
     height: 440,
   },

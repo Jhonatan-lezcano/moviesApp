@@ -7,6 +7,7 @@ import {
   Dimensions,
   ScrollView,
   ActivityIndicator,
+  TouchableOpacity,
 } from 'react-native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 
@@ -14,7 +15,6 @@ import Icon from 'react-native-vector-icons/Ionicons';
 
 import {RootStackParams} from '../../navigation/StackNavigation';
 import useMovieDetail from '../../hooks/useMovieDetail';
-import SplashScreen from '../SplashScreen';
 import MovieDetails from '../../components/MovieDetails';
 
 const heightPoster = Dimensions.get('screen').height;
@@ -22,18 +22,13 @@ const heightPoster = Dimensions.get('screen').height;
 interface Props
   extends NativeStackScreenProps<RootStackParams, 'MovieScreen'> {}
 
-const MovieScreen = ({route}: Props) => {
+const MovieScreen = ({route, navigation}: Props) => {
   const movie = route.params;
   const uri = `https://image.tmdb.org/t/p/w500${movie.poster_path}`;
   const {isLoading, movieFull, cast} = useMovieDetail(movie.id);
 
-  console.log(movie.id);
-
-  if (isLoading) {
-  }
-
   return (
-    <ScrollView>
+    <ScrollView style={styles.container}>
       <View style={styles.containerImage}>
         <Image source={{uri}} style={styles.posterImage} />
       </View>
@@ -48,6 +43,11 @@ const MovieScreen = ({route}: Props) => {
           <MovieDetails movieFull={movieFull!} cast={cast} />
         )}
       </View>
+      <TouchableOpacity
+        style={styles.buttonGoBack}
+        onPress={() => navigation.goBack()}>
+        <Icon name="arrow-back-outline" color="white" size={40} />
+      </TouchableOpacity>
     </ScrollView>
   );
 };
@@ -55,6 +55,9 @@ const MovieScreen = ({route}: Props) => {
 export default MovieScreen;
 
 const styles = StyleSheet.create({
+  container: {
+    backgroundColor: 'white',
+  },
   containerImage: {
     borderBottomLeftRadius: 25,
     borderBottomRightRadius: 25,
@@ -90,5 +93,10 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: 'bold',
     color: 'black',
+  },
+  buttonGoBack: {
+    position: 'absolute',
+    top: 15,
+    left: 10,
   },
 });
